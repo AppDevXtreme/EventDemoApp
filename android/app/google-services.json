@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "692808027809",
+    "project_id": "fftestapp-70f0f",
+    "storage_bucket": "fftestapp-70f0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:692808027809:android:d151199d983c8eac9a6ae0",
+        "android_client_info": {
+          "package_name": "com.appxtreme.eventappff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "692808027809-p8qbictsvtqbr7pqjldn2a0epjr0leo0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appxtreme.eventappff",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "692808027809-q7ea2je6r7gnjleg26akn00tdijfo20j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO5oIP2VGCwgEhTNrBbOI7vw7a8TcoB30"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "692808027809-q7ea2je6r7gnjleg26akn00tdijfo20j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "692808027809-04v21onh8v2nbqb6n225ltpboqk74pce.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.appxtreme.eventappff"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
