@@ -1,10 +1,11 @@
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SearchBarWidget extends StatefulWidget {
-  SearchBarWidget({Key key}) : super(key: key);
+  const SearchBarWidget({Key key}) : super(key: key);
 
   @override
   _SearchBarWidgetState createState() => _SearchBarWidgetState();
@@ -38,7 +39,11 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
               Expanded(
                 flex: 10,
                 child: TextFormField(
-                  onChanged: (_) => setState(() {}),
+                  onChanged: (_) => EasyDebounce.debounce(
+                    'textController',
+                    Duration(milliseconds: 2000),
+                    () => setState(() {}),
+                  ),
                   controller: textController,
                   obscureText: false,
                   decoration: InputDecoration(
@@ -95,7 +100,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                   ),
                   textAlign: TextAlign.start,
                 ),
-              )
+              ),
             ],
           ),
         ),

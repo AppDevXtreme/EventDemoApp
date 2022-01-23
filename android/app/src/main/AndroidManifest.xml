@@ -5,13 +5,14 @@
    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
    <application
-        android:label="flutter_event_app"
+        android:label="Plus One"
         tools:replace="android:label"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true">
 
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -45,7 +46,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAO5oIP2VGCwgEhTNrBbOI7vw7a8TcoB30"/>
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAzwKiVPrs-pZZoLlulIGUb-3oxouAM5d8"/>
 
 
     </application>

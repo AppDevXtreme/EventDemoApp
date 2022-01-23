@@ -27,19 +27,69 @@ abstract class EventpostsRecord
   String get coverimage;
 
   @nullable
-  BuiltList<String> get category;
-
-  @nullable
-  BuiltList<String> get province;
-
-  @nullable
   String get userID;
 
   @nullable
   String get profileimage;
 
   @nullable
-  String get hostedby;
+  BuiltList<DocumentReference> get likes;
+
+  @nullable
+  int get comments;
+
+  @nullable
+  DateTime get timePosted;
+
+  @nullable
+  @BuiltValueField(wireName: 'LocationName')
+  String get locationName;
+
+  @nullable
+  String get hostedBy;
+
+  @nullable
+  String get province;
+
+  @nullable
+  String get category;
+
+  @nullable
+  DocumentReference get userAgent;
+
+  @nullable
+  String get email;
+
+  @nullable
+  @BuiltValueField(wireName: 'display_name')
+  String get displayName;
+
+  @nullable
+  @BuiltValueField(wireName: 'photo_url')
+  String get photoUrl;
+
+  @nullable
+  String get uid;
+
+  @nullable
+  @BuiltValueField(wireName: 'created_time')
+  DateTime get createdTime;
+
+  @nullable
+  @BuiltValueField(wireName: 'phone_number')
+  String get phoneNumber;
+
+  @nullable
+  bool get postOwner;
+
+  @nullable
+  DateTime get endDate;
+
+  @nullable
+  bool get isPrivate;
+
+  @nullable
+  BuiltList<DocumentReference> get eventfollows;
 
   @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
@@ -49,11 +99,22 @@ abstract class EventpostsRecord
     ..eventname = ''
     ..description = ''
     ..coverimage = ''
-    ..category = ListBuilder()
-    ..province = ListBuilder()
     ..userID = ''
     ..profileimage = ''
-    ..hostedby = '';
+    ..likes = ListBuilder()
+    ..comments = 0
+    ..locationName = ''
+    ..hostedBy = ''
+    ..province = ''
+    ..category = ''
+    ..email = ''
+    ..displayName = ''
+    ..photoUrl = ''
+    ..uid = ''
+    ..phoneNumber = ''
+    ..postOwner = false
+    ..isPrivate = false
+    ..eventfollows = ListBuilder();
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('eventposts');
@@ -61,6 +122,10 @@ abstract class EventpostsRecord
   static Stream<EventpostsRecord> getDocument(DocumentReference ref) => ref
       .snapshots()
       .map((s) => serializers.deserializeWith(serializer, serializedData(s)));
+
+  static Future<EventpostsRecord> getDocumentOnce(DocumentReference ref) => ref
+      .get()
+      .then((s) => serializers.deserializeWith(serializer, serializedData(s)));
 
   static EventpostsRecord fromAlgolia(AlgoliaObjectSnapshot snapshot) =>
       EventpostsRecord(
@@ -74,11 +139,31 @@ abstract class EventpostsRecord
               ))
           ..description = snapshot.data['description']
           ..coverimage = snapshot.data['coverimage']
-          ..category = safeGet(() => ListBuilder(snapshot.data['category']))
-          ..province = safeGet(() => ListBuilder(snapshot.data['province']))
           ..userID = snapshot.data['userID']
           ..profileimage = snapshot.data['profileimage']
-          ..hostedby = snapshot.data['hostedby']
+          ..likes = safeGet(
+              () => ListBuilder(snapshot.data['likes'].map((s) => toRef(s))))
+          ..comments = snapshot.data['comments']
+          ..timePosted = safeGet(() =>
+              DateTime.fromMillisecondsSinceEpoch(snapshot.data['timePosted']))
+          ..locationName = snapshot.data['LocationName']
+          ..hostedBy = snapshot.data['hostedBy']
+          ..province = snapshot.data['province']
+          ..category = snapshot.data['category']
+          ..userAgent = safeGet(() => toRef(snapshot.data['userAgent']))
+          ..email = snapshot.data['email']
+          ..displayName = snapshot.data['display_name']
+          ..photoUrl = snapshot.data['photo_url']
+          ..uid = snapshot.data['uid']
+          ..createdTime = safeGet(() => DateTime.fromMillisecondsSinceEpoch(
+              snapshot.data['created_time']))
+          ..phoneNumber = snapshot.data['phone_number']
+          ..postOwner = snapshot.data['postOwner']
+          ..endDate = safeGet(() =>
+              DateTime.fromMillisecondsSinceEpoch(snapshot.data['endDate']))
+          ..isPrivate = snapshot.data['isPrivate']
+          ..eventfollows = safeGet(() =>
+              ListBuilder(snapshot.data['eventfollows'].map((s) => toRef(s))))
           ..reference = EventpostsRecord.collection.doc(snapshot.objectID),
       );
 
@@ -115,7 +200,22 @@ Map<String, dynamic> createEventpostsRecordData({
   String coverimage,
   String userID,
   String profileimage,
-  String hostedby,
+  int comments,
+  DateTime timePosted,
+  String locationName,
+  String hostedBy,
+  String province,
+  String category,
+  DocumentReference userAgent,
+  String email,
+  String displayName,
+  String photoUrl,
+  String uid,
+  DateTime createdTime,
+  String phoneNumber,
+  bool postOwner,
+  DateTime endDate,
+  bool isPrivate,
 }) =>
     serializers.toFirestore(
         EventpostsRecord.serializer,
@@ -125,8 +225,23 @@ Map<String, dynamic> createEventpostsRecordData({
           ..location = location
           ..description = description
           ..coverimage = coverimage
-          ..category = null
-          ..province = null
           ..userID = userID
           ..profileimage = profileimage
-          ..hostedby = hostedby));
+          ..likes = null
+          ..comments = comments
+          ..timePosted = timePosted
+          ..locationName = locationName
+          ..hostedBy = hostedBy
+          ..province = province
+          ..category = category
+          ..userAgent = userAgent
+          ..email = email
+          ..displayName = displayName
+          ..photoUrl = photoUrl
+          ..uid = uid
+          ..createdTime = createdTime
+          ..phoneNumber = phoneNumber
+          ..postOwner = postOwner
+          ..endDate = endDate
+          ..isPrivate = isPrivate
+          ..eventfollows = null));

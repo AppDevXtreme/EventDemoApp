@@ -53,6 +53,21 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
   String get displayName;
 
   @nullable
+  bool get isFollowed;
+
+  @nullable
+  int get hasBooked;
+
+  @nullable
+  bool get isVerified;
+
+  @nullable
+  BuiltList<DocumentReference> get follows;
+
+  @nullable
+  BuiltList<DocumentReference> get following;
+
+  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference get reference;
 
@@ -68,7 +83,12 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
     ..status = ''
     ..photoUrl = ''
     ..phoneNumber = ''
-    ..displayName = '';
+    ..displayName = ''
+    ..isFollowed = false
+    ..hasBooked = 0
+    ..isVerified = false
+    ..follows = ListBuilder()
+    ..following = ListBuilder();
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('users');
@@ -76,6 +96,10 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
   static Stream<UsersRecord> getDocument(DocumentReference ref) => ref
       .snapshots()
       .map((s) => serializers.deserializeWith(serializer, serializedData(s)));
+
+  static Future<UsersRecord> getDocumentOnce(DocumentReference ref) => ref
+      .get()
+      .then((s) => serializers.deserializeWith(serializer, serializedData(s)));
 
   UsersRecord._();
   factory UsersRecord([void Function(UsersRecordBuilder) updates]) =
@@ -101,6 +125,9 @@ Map<String, dynamic> createUsersRecordData({
   String photoUrl,
   String phoneNumber,
   String displayName,
+  bool isFollowed,
+  int hasBooked,
+  bool isVerified,
 }) =>
     serializers.toFirestore(
         UsersRecord.serializer,
@@ -117,4 +144,9 @@ Map<String, dynamic> createUsersRecordData({
           ..status = status
           ..photoUrl = photoUrl
           ..phoneNumber = phoneNumber
-          ..displayName = displayName));
+          ..displayName = displayName
+          ..isFollowed = isFollowed
+          ..hasBooked = hasBooked
+          ..isVerified = isVerified
+          ..follows = null
+          ..following = null));

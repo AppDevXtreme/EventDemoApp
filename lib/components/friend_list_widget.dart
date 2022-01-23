@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FriendListWidget extends StatefulWidget {
-  FriendListWidget({Key key}) : super(key: key);
+  const FriendListWidget({Key key}) : super(key: key);
 
   @override
   _FriendListWidgetState createState() => _FriendListWidgetState();
@@ -53,7 +53,7 @@ class _FriendListWidgetState extends State<FriendListWidget> {
                         child: Image.asset(
                           'assets/images/user_4@2x.png',
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -71,7 +71,7 @@ class _FriendListWidgetState extends State<FriendListWidget> {
                               fontFamily: 'Lexend Deca',
                               color: FlutterFlowTheme.tertiaryColor,
                             ),
-                          )
+                          ),
                         ],
                       ),
                       Row(
@@ -91,9 +91,9 @@ class _FriendListWidgetState extends State<FriendListWidget> {
                                 ),
                               ),
                             ),
-                          )
+                          ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -107,13 +107,13 @@ class _FriendListWidgetState extends State<FriendListWidget> {
                         Icons.chevron_right_rounded,
                         color: Color(0xFF82878C),
                         size: 24,
-                      )
+                      ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'serialization_util.dart';
 import '../backend.dart';
-import '../../flutter_flow/flutter_flow_util.dart';
 import '../../flutter_flow/flutter_flow_theme.dart';
+import '../../flutter_flow/flutter_flow_util.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
@@ -12,10 +13,18 @@ import '../../login/login_widget.dart';
 import '../../register/register_widget.dart';
 import '../../complete_profile/complete_profile_widget.dart';
 import '../../forgot_password/forgot_password_widget.dart';
-import '../../my_friends/my_friends_widget.dart';
 import '../../chat_details/chat_details_widget.dart';
 import '../../edit_profile/edit_profile_widget.dart';
+import '../../my_profil_details/my_profil_details_widget.dart';
 import '../../change_password/change_password_widget.dart';
+import '../../create_event/create_event_widget.dart';
+import '../../event_post_success/event_post_success_widget.dart';
+import '../../my_events/my_events_widget.dart';
+import '../../event_details_new/event_details_new_widget.dart';
+import '../../event_category/event_category_widget.dart';
+import '../../edit_event/edit_event_widget.dart';
+import '../../event_post_update_success/event_post_update_success_widget.dart';
+import '../../r_s_v_p_succes/r_s_v_p_succes_widget.dart';
 
 class PushNotificationsHandler extends StatefulWidget {
   const PushNotificationsHandler(
@@ -74,9 +83,9 @@ class _PushNotificationsHandlerState extends State<PushNotificationsHandler> {
           child: Center(
             child: Builder(
               builder: (context) => Image.asset(
-                'assets/images/splash@2x.png',
-                width: double.infinity,
-                height: double.infinity,
+                'assets/images/splash.jpg',
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 1,
                 fit: BoxFit.fill,
               ),
             ),
@@ -90,11 +99,12 @@ final pageBuilderMap = <String, Future<Widget> Function(Map<String, dynamic>)>{
   'Register': (data) async => RegisterWidget(),
   'completeProfile': (data) async => CompleteProfileWidget(),
   'forgotPassword': (data) async => ForgotPasswordWidget(),
-  'MyFriends': (data) async => MyFriendsWidget(),
+  'MyFriends': (data) async => NavBarPage(initialPage: 'MyFriendsWidget'),
   'chatMain': (data) async => NavBarPage(initialPage: 'ChatMainWidget'),
   'chatDetails': (data) async => ChatDetailsWidget(
         chatUser: await getDocumentParameter(
             data, 'chatUser', UsersRecord.serializer),
+        chatRef: getParameter(data, 'chatRef'),
       ),
   'myProfile': (data) async => NavBarPage(initialPage: 'MyProfileWidget'),
   'editProfile': (data) async => EditProfileWidget(
@@ -104,7 +114,27 @@ final pageBuilderMap = <String, Future<Widget> Function(Map<String, dynamic>)>{
             data, 'userDisplay', UsersRecord.serializer),
         userPhoto: getParameter(data, 'userPhoto'),
       ),
+  'myProfilDetails': (data) async => MyProfilDetailsWidget(
+        userDetails: getParameter(data, 'userDetails'),
+      ),
   'changePassword': (data) async => ChangePasswordWidget(),
+  'createEvent': (data) async => CreateEventWidget(
+        userinfo: await getDocumentParameter(
+            data, 'userinfo', UsersRecord.serializer),
+      ),
+  'eventPostSuccess': (data) async => EventPostSuccessWidget(),
+  'MyEvents': (data) async => MyEventsWidget(),
+  'eventDetailsNew': (data) async => EventDetailsNewWidget(
+        eventDetails: getParameter(data, 'eventDetails'),
+        chatUser: await getDocumentParameter(
+            data, 'chatUser', UsersRecord.serializer),
+      ),
+  'EventCategory': (data) async => EventCategoryWidget(),
+  'EditEvent': (data) async => EditEventWidget(
+        eventDetails: getParameter(data, 'eventDetails'),
+      ),
+  'eventPostUpdateSuccess': (data) async => EventPostUpdateSuccessWidget(),
+  'RSVPSucces': (data) async => RSVPSuccesWidget(),
 };
 
 bool hasMatchingParameters(Map<String, dynamic> data, Set<String> params) =>
@@ -118,67 +148,9 @@ Map<String, dynamic> getInitialParameterData(Map<String, dynamic> data) {
         parameterDataStr.isEmpty) {
       return {};
     }
-    return json.decode(parameterDataStr) as Map<String, dynamic>;
+    return jsonDecode(parameterDataStr) as Map<String, dynamic>;
   } catch (e) {
     print('Error parsing parameter data: $e');
     return {};
   }
-}
-
-T getParameter<T>(Map<String, dynamic> data, String paramName) {
-  try {
-    if (!data.containsKey(paramName)) {
-      return null;
-    }
-    final param = data[paramName];
-    switch (T) {
-      case String:
-        return param;
-      case double:
-        return param.toDouble();
-      case DateTime:
-        return DateTime.fromMillisecondsSinceEpoch(param) as T;
-      case LatLng:
-        return latLngFromString(param) as T;
-    }
-    if (param is String) {
-      return FirebaseFirestore.instance.doc(param) as T;
-    }
-    return param;
-  } catch (e) {
-    print('Error parsing parameter "$paramName": $e');
-    return null;
-  }
-}
-
-Future<T> getDocumentParameter<T>(
-    Map<String, dynamic> data, String paramName, Serializer<T> serializer) {
-  if (!data.containsKey(paramName)) {
-    return null;
-  }
-  return FirebaseFirestore.instance
-      .doc(data[paramName])
-      .get()
-      .then((s) => serializers.deserializeWith(serializer, serializedData(s)));
-}
-
-final latRegex = RegExp(
-    r'^(+|-)?(?:90(?:(?:.0{1,7})?)|(?:[0-9]|[1-8][0-9])(?:(?:.[0-9]{1,7})?))$');
-final lngRegex = RegExp(
-    r'^(+|-)?(?:180(?:(?:.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:.[0-9]{1,7})?))$');
-
-LatLng latLngFromString(String latLngStr) {
-  final pieces = latLngStr.split(',');
-  if (pieces.length != 2) {
-    return null;
-  }
-  final lat = pieces[0].trim();
-  final lng = pieces[1].trim();
-  if (!latRegex.hasMatch(lat)) {
-    return null;
-  }
-  if (!lngRegex.hasMatch(lng)) {
-    return null;
-  }
-  return LatLng(double.parse(lat), double.parse(lng));
 }

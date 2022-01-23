@@ -1,4 +1,4 @@
-# flutter_event_app
+# Plus One
 
 A new Flutter project.
 

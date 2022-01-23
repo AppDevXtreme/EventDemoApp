@@ -1,6 +1,6 @@
 {
-    "name": "flutter_event_app",
-    "short_name": "flutter_event_app",
+    "name": "Plus One",
+    "short_name": "Plus One",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -5,37 +5,67 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../main.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ChatDetailsWidget extends StatefulWidget {
-  ChatDetailsWidget({
+  const ChatDetailsWidget({
     Key key,
     this.chatUser,
+    this.chatRef,
   }) : super(key: key);
 
   final UsersRecord chatUser;
+  final DocumentReference chatRef;
 
   @override
   _ChatDetailsWidgetState createState() => _ChatDetailsWidgetState();
 }
 
 class _ChatDetailsWidgetState extends State<ChatDetailsWidget> {
+  FFChatInfo _chatInfo;
+  bool isGroupChat() {
+    if (widget.chatUser == null) {
+      return true;
+    }
+    if (widget.chatRef == null) {
+      return false;
+    }
+    return _chatInfo?.isGroupChat ?? false;
+  }
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    FFChatManager.instance
+        .getChatInfo(
+      otherUserRecord: widget.chatUser,
+      chatReference: widget.chatRef,
+    )
+        .listen((info) {
+      if (mounted) {
+        setState(() => _chatInfo = info);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.primaryColor,
+        backgroundColor: Color(0xFF090F13),
         automaticallyImplyLeading: false,
         leading: InkWell(
           onTap: () async {
             await Navigator.push(
               context,
               PageTransition(
-                type: PageTransitionType.leftToRight,
+                type: PageTransitionType.rightToLeft,
                 duration: Duration(milliseconds: 200),
                 reverseDuration: Duration(milliseconds: 200),
                 child: NavBarPage(initialPage: 'chatMain'),
@@ -52,6 +82,7 @@ class _ChatDetailsWidgetState extends State<ChatDetailsWidget> {
           widget.chatUser.displayName,
           style: FlutterFlowTheme.subtitle2.override(
             fontFamily: 'Lexend Deca',
+            color: FlutterFlowTheme.primaryColor,
           ),
         ),
         actions: [
@@ -67,7 +98,7 @@ class _ChatDetailsWidgetState extends State<ChatDetailsWidget> {
                 size: 24,
               ),
             ),
-          )
+          ),
         ],
         centerTitle: true,
         elevation: 3,
@@ -121,7 +152,7 @@ class _ChatDetailsWidgetState extends State<ChatDetailsWidget> {
                             }
                           },
                         ),
-                      )
+                      ),
                     ],
                   ),
                   Padding(
@@ -153,7 +184,7 @@ class _ChatDetailsWidgetState extends State<ChatDetailsWidget> {
                               ),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -168,7 +199,7 @@ class _ChatDetailsWidgetState extends State<ChatDetailsWidget> {
                           fontFamily: 'Lexend Deca',
                           color: FlutterFlowTheme.tertiaryColor,
                         ),
-                      )
+                      ),
                     ],
                   ),
                   Row(
@@ -184,7 +215,7 @@ class _ChatDetailsWidgetState extends State<ChatDetailsWidget> {
                             color: FlutterFlowTheme.primaryColor,
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                   Row(
@@ -199,7 +230,7 @@ class _ChatDetailsWidgetState extends State<ChatDetailsWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Job Title',
+                                'Status',
                                 style: FlutterFlowTheme.bodyText1.override(
                                   fontFamily: 'Lexend Deca',
                                   fontSize: 10,
@@ -210,16 +241,14 @@ class _ChatDetailsWidgetState extends State<ChatDetailsWidget> {
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                                 child: Text(
-                                  columnUsersRecord.userRole,
-                                  style: FlutterFlowTheme.subtitle2.override(
-                                    fontFamily: 'Lexend Deca',
-                                  ),
+                                  columnUsersRecord.status,
+                                  style: FlutterFlowTheme.subtitle2,
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                   Row(
@@ -234,7 +263,7 @@ class _ChatDetailsWidgetState extends State<ChatDetailsWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Employed Since',
+                                'Bio',
                                 style: FlutterFlowTheme.bodyText1.override(
                                   fontFamily: 'Lexend Deca',
                                   fontSize: 10,
@@ -245,19 +274,16 @@ class _ChatDetailsWidgetState extends State<ChatDetailsWidget> {
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                                 child: Text(
-                                  dateTimeFormat(
-                                      'MMMEd', columnUsersRecord.createdTime),
-                                  style: FlutterFlowTheme.subtitle2.override(
-                                    fontFamily: 'Lexend Deca',
-                                  ),
+                                  columnUsersRecord.bio,
+                                  style: FlutterFlowTheme.subtitle2,
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
-                      )
+                      ),
                     ],
-                  )
+                  ),
                 ],
               );
             },
@@ -265,15 +291,10 @@ class _ChatDetailsWidgetState extends State<ChatDetailsWidget> {
         ),
       ),
       body: SafeArea(
-        child: FutureBuilder<FFChatInfo>(
-          future: FFChatManager.instance.getChatInfo(
-            currentUserReference,
-            widget.chatUser.reference,
-            ChatUser(
-              uid: widget.chatUser.reference.id,
-              name: widget.chatUser.displayName,
-              avatar: widget.chatUser.photoUrl,
-            ),
+        child: StreamBuilder<FFChatInfo>(
+          stream: FFChatManager.instance.getChatInfo(
+            otherUserRecord: widget.chatUser,
+            chatReference: widget.chatRef,
           ),
           builder: (context, snapshot) => snapshot.hasData
               ? FFChatPage(
@@ -288,7 +309,7 @@ class _ChatDetailsWidgetState extends State<ChatDetailsWidget> {
                     ),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  otherUserBoxDecoration: BoxDecoration(
+                  otherUsersBoxDecoration: BoxDecoration(
                     color: Color(0xFF4B39EF),
                     border: Border.all(
                       color: Colors.transparent,
@@ -302,7 +323,7 @@ class _ChatDetailsWidgetState extends State<ChatDetailsWidget> {
                     fontSize: 14,
                     fontStyle: FontStyle.normal,
                   ),
-                  otherUserTextStyle: GoogleFonts.getFont(
+                  otherUsersTextStyle: GoogleFonts.getFont(
                     'Lexend Deca',
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
@@ -319,6 +340,11 @@ class _ChatDetailsWidgetState extends State<ChatDetailsWidget> {
                     color: Colors.black,
                     fontWeight: FontWeight.normal,
                     fontSize: 14,
+                  ),
+                  emptyChatWidget: FaIcon(
+                    FontAwesomeIcons.solidCommentDots,
+                    color: Colors.white,
+                    size: 30,
                   ),
                 )
               : const Center(

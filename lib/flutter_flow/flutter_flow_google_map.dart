@@ -87,8 +87,7 @@ class _FlutterFlowGoogleMapState extends State<FlutterFlowGoogleMap> {
   Completer<GoogleMapController> _controller;
   LatLng currentMapCenter;
 
-  void onCameraIdle() =>
-      () => widget.onCameraIdle?.call(currentMapCenter.toLatLng());
+  void onCameraIdle() => widget.onCameraIdle?.call(currentMapCenter.toLatLng());
 
   @override
   void initState() {

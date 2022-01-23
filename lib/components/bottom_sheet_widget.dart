@@ -5,15 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BottomSheetWidget extends StatefulWidget {
-  BottomSheetWidget({Key key}) : super(key: key);
+  const BottomSheetWidget({Key key}) : super(key: key);
 
   @override
   _BottomSheetWidgetState createState() => _BottomSheetWidgetState();
 }
 
 class _BottomSheetWidgetState extends State<BottomSheetWidget> {
-  bool _loadingButton = false;
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -45,10 +43,8 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                     children: [
                       Text(
                         'Sheeeesh!!!',
-                        style: FlutterFlowTheme.title2.override(
-                          fontFamily: 'Lexend Deca',
-                        ),
-                      )
+                        style: FlutterFlowTheme.title2,
+                      ),
                     ],
                   ),
                 ),
@@ -66,7 +62,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                               color: FlutterFlowTheme.grayDark,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -99,16 +95,15 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                             ),
                             borderRadius: 8,
                           ),
-                          loading: _loadingButton,
-                        )
+                        ),
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
-        )
+        ),
       ],
     );
   }

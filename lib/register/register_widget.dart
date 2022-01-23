@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RegisterWidget extends StatefulWidget {
-  RegisterWidget({Key key}) : super(key: key);
+  const RegisterWidget({Key key}) : super(key: key);
 
   @override
   _RegisterWidgetState createState() => _RegisterWidgetState();
@@ -21,8 +21,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   TextEditingController emailAddressController;
   TextEditingController passwordController;
   bool passwordVisibility;
-  bool _loadingButton1 = false;
-  bool _loadingButton2 = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -47,12 +45,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
           height: double.infinity,
           decoration: BoxDecoration(
             color: Color(0x19444D59),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: Image.asset(
-                'assets/images/launchScreen@3x.png',
-              ).image,
-            ),
           ),
           child: Padding(
             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 110),
@@ -63,9 +55,9 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 24),
                   child: Image.asset(
-                    'assets/images/logoGeekMessaging.png',
+                    'assets/images/jarredLogo.png',
                     width: 160,
-                    height: 140,
+                    height: 160,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -85,9 +77,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                         obscureText: false,
                         decoration: InputDecoration(
                           labelText: 'Email Address',
-                          labelStyle: FlutterFlowTheme.bodyText1.override(
-                            fontFamily: 'Lexend Deca',
-                          ),
+                          labelStyle: FlutterFlowTheme.bodyText1,
                           hintText: 'Email Address',
                           hintStyle: FlutterFlowTheme.bodyText1.override(
                             fontFamily: 'Lexend Deca',
@@ -139,9 +129,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                         obscureText: !passwordVisibility,
                         decoration: InputDecoration(
                           labelText: 'Choose Password',
-                          labelStyle: FlutterFlowTheme.bodyText1.override(
-                            fontFamily: 'Lexend Deca',
-                          ),
+                          labelStyle: FlutterFlowTheme.bodyText1,
                           hintText: 'Choose Password',
                           hintStyle: FlutterFlowTheme.bodyText1.override(
                             fontFamily: 'Lexend Deca',
@@ -204,9 +192,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                         obscureText: !confirmPasswordVisibility,
                         decoration: InputDecoration(
                           labelText: 'Confirm Password',
-                          labelStyle: FlutterFlowTheme.bodyText1.override(
-                            fontFamily: 'Lexend Deca',
-                          ),
+                          labelStyle: FlutterFlowTheme.bodyText1,
                           hintText: 'Confirm Password',
                           hintStyle: FlutterFlowTheme.bodyText1.override(
                             fontFamily: 'Lexend Deca',
@@ -256,60 +242,53 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                 ),
                 FFButtonWidget(
                   onPressed: () async {
-                    setState(() => _loadingButton1 = true);
-                    try {
-                      if (passwordController.text !=
-                          confirmPasswordController.text) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              "Passwords don't match!",
-                            ),
+                    if (passwordController.text !=
+                        confirmPasswordController.text) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            "Passwords don't match!",
                           ),
-                        );
-                        return;
-                      }
-
-                      final user = await createAccountWithEmail(
-                        context,
-                        emailAddressController.text,
-                        passwordController.text,
-                      );
-                      if (user == null) {
-                        return;
-                      }
-
-                      final usersCreateData = createUsersRecordData(
-                        email: emailAddressController.text,
-                        createdTime: getCurrentTimestamp,
-                        password: passwordController.text,
-                      );
-                      await UsersRecord.collection
-                          .doc(user.uid)
-                          .update(usersCreateData);
-
-                      await Navigator.pushAndRemoveUntil(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          duration: Duration(milliseconds: 500),
-                          reverseDuration: Duration(milliseconds: 500),
-                          child: CompleteProfileWidget(),
                         ),
-                        (r) => false,
                       );
-                    } finally {
-                      setState(() => _loadingButton1 = false);
+                      return;
                     }
+
+                    final user = await createAccountWithEmail(
+                      context,
+                      emailAddressController.text,
+                      passwordController.text,
+                    );
+                    if (user == null) {
+                      return;
+                    }
+
+                    final usersCreateData = createUsersRecordData(
+                      email: emailAddressController.text,
+                      createdTime: getCurrentTimestamp,
+                      password: passwordController.text,
+                    );
+                    await UsersRecord.collection
+                        .doc(user.uid)
+                        .update(usersCreateData);
+
+                    await Navigator.pushAndRemoveUntil(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.rightToLeft,
+                        duration: Duration(milliseconds: 500),
+                        reverseDuration: Duration(milliseconds: 500),
+                        child: CompleteProfileWidget(),
+                      ),
+                      (r) => false,
+                    );
                   },
                   text: 'Create Account',
                   options: FFButtonOptions(
                     width: 300,
                     height: 55,
                     color: FlutterFlowTheme.primaryColor,
-                    textStyle: FlutterFlowTheme.subtitle2.override(
-                      fontFamily: 'Lexend Deca',
-                    ),
+                    textStyle: FlutterFlowTheme.subtitle2,
                     elevation: 4,
                     borderSide: BorderSide(
                       color: Colors.transparent,
@@ -317,7 +296,78 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                     ),
                     borderRadius: 30,
                   ),
-                  loading: _loadingButton1,
+                ),
+                Align(
+                  alignment: AlignmentDirectional(0, 0),
+                  child: Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                    child: Container(
+                      width: 230,
+                      height: 44,
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: AlignmentDirectional(0, 0),
+                            child: FFButtonWidget(
+                              onPressed: () async {
+                                final user = await signInWithGoogle(context);
+                                if (user == null) {
+                                  return;
+                                }
+                                await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    duration: Duration(milliseconds: 500),
+                                    reverseDuration:
+                                        Duration(milliseconds: 500),
+                                    child: CompleteProfileWidget(),
+                                  ),
+                                );
+                              },
+                              text: 'Sign in with Google',
+                              icon: Icon(
+                                Icons.add,
+                                color: Colors.transparent,
+                                size: 20,
+                              ),
+                              options: FFButtonOptions(
+                                width: 230,
+                                height: 44,
+                                color: Colors.white,
+                                textStyle: GoogleFonts.getFont(
+                                  'Roboto',
+                                  color: Color(0xFF606060),
+                                  fontSize: 17,
+                                ),
+                                elevation: 4,
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 0,
+                                ),
+                                borderRadius: 12,
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: AlignmentDirectional(-0.83, 0),
+                            child: Container(
+                              width: 22,
+                              height: 22,
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: Image.network(
+                                'https://i0.wp.com/nanophorm.com/wp-content/uploads/2018/04/google-logo-icon-PNG-Transparent-Background.png?w=1000&ssl=1',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
@@ -329,28 +379,21 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
                         child: Text(
                           'Already have an account?',
-                          style: FlutterFlowTheme.bodyText1.override(
-                            fontFamily: 'Lexend Deca',
-                          ),
+                          style: FlutterFlowTheme.bodyText1,
                         ),
                       ),
                       FFButtonWidget(
                         onPressed: () async {
-                          setState(() => _loadingButton2 = true);
-                          try {
-                            await Navigator.pushAndRemoveUntil(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.fade,
-                                duration: Duration(milliseconds: 150),
-                                reverseDuration: Duration(milliseconds: 150),
-                                child: LoginWidget(),
-                              ),
-                              (r) => false,
-                            );
-                          } finally {
-                            setState(() => _loadingButton2 = false);
-                          }
+                          await Navigator.pushAndRemoveUntil(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.fade,
+                              duration: Duration(milliseconds: 150),
+                              reverseDuration: Duration(milliseconds: 150),
+                              child: LoginWidget(),
+                            ),
+                            (r) => false,
+                          );
                         },
                         text: 'Login',
                         options: FFButtonOptions(
@@ -368,11 +411,10 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                           ),
                           borderRadius: 12,
                         ),
-                        loading: _loadingButton2,
-                      )
+                      ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),

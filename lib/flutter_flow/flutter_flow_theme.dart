@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class FlutterFlowTheme {
-  static const Color primaryColor = Color(0xFF4B39EF);
+  static const Color primaryColor = Color(0xFFFE705A);
   static const Color secondaryColor = Color(0xFFEE8B60);
   static const Color tertiaryColor = Color(0xFFFFFFFF);
 
@@ -15,7 +15,6 @@ class FlutterFlowTheme {
 
   String primaryFontFamily = 'Poppins';
   String secondaryFontFamily = 'Roboto';
-
   static TextStyle get title1 => GoogleFonts.getFont(
         'Lexend Deca',
         color: tertiaryColor,
@@ -61,17 +60,30 @@ class FlutterFlowTheme {
 }
 
 extension TextStyleHelper on TextStyle {
-  TextStyle override(
-          {String fontFamily,
-          Color color,
-          double fontSize,
-          FontWeight fontWeight,
-          FontStyle fontStyle}) =>
-      GoogleFonts.getFont(
-        fontFamily,
-        color: color ?? this.color,
-        fontSize: fontSize ?? this.fontSize,
-        fontWeight: fontWeight ?? this.fontWeight,
-        fontStyle: fontStyle ?? this.fontStyle,
-      );
+  TextStyle override({
+    String fontFamily,
+    Color color,
+    double fontSize,
+    FontWeight fontWeight,
+    FontStyle fontStyle,
+    bool useGoogleFonts = true,
+    double lineHeight,
+  }) =>
+      useGoogleFonts
+          ? GoogleFonts.getFont(
+              fontFamily,
+              color: color ?? this.color,
+              fontSize: fontSize ?? this.fontSize,
+              fontWeight: fontWeight ?? this.fontWeight,
+              fontStyle: fontStyle ?? this.fontStyle,
+              height: lineHeight,
+            )
+          : copyWith(
+              fontFamily: fontFamily,
+              color: color,
+              fontSize: fontSize,
+              fontWeight: fontWeight,
+              fontStyle: fontStyle,
+              height: lineHeight,
+            );
 }

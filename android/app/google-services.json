@@ -1,48 +1,40 @@
 {
   "project_info": {
-    "project_number": "692808027809",
-    "project_id": "fftestapp-70f0f",
-    "storage_bucket": "fftestapp-70f0f.appspot.com"
+    "project_number": "379293665544",
+    "project_id": "eventapp-325510",
+    "storage_bucket": "eventapp-325510.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:692808027809:android:d151199d983c8eac9a6ae0",
+        "mobilesdk_app_id": "1:379293665544:android:b6b5d2e7ae8a049ed684bd",
         "android_client_info": {
           "package_name": "com.appxtreme.eventappff"
         }
       },
       "oauth_client": [
         {
-          "client_id": "692808027809-p8qbictsvtqbr7pqjldn2a0epjr0leo0.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.appxtreme.eventappff",
-            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
-          }
-        },
-        {
-          "client_id": "692808027809-q7ea2je6r7gnjleg26akn00tdijfo20j.apps.googleusercontent.com",
+          "client_id": "379293665544-7iguedqhirk28d7dem5eqdjefmct23hu.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAO5oIP2VGCwgEhTNrBbOI7vw7a8TcoB30"
+          "current_key": "AIzaSyAzwKiVPrs-pZZoLlulIGUb-3oxouAM5d8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "692808027809-q7ea2je6r7gnjleg26akn00tdijfo20j.apps.googleusercontent.com",
+              "client_id": "379293665544-7iguedqhirk28d7dem5eqdjefmct23hu.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "692808027809-04v21onh8v2nbqb6n225ltpboqk74pce.apps.googleusercontent.com",
+              "client_id": "379293665544-56vcl9e4u2gfkk9hrunluk338fqtparq.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.appxtreme.eventappff"
+                "bundle_id": "co.za.appxtreme.eventdemo"
               }
             }
           ]

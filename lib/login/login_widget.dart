@@ -1,5 +1,4 @@
 import '../auth/auth_util.dart';
-import '../complete_profile/complete_profile_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -7,11 +6,10 @@ import '../forgot_password/forgot_password_widget.dart';
 import '../main.dart';
 import '../register/register_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginWidget extends StatefulWidget {
-  LoginWidget({Key key}) : super(key: key);
+  const LoginWidget({Key key}) : super(key: key);
 
   @override
   _LoginWidgetState createState() => _LoginWidgetState();
@@ -21,10 +19,6 @@ class _LoginWidgetState extends State<LoginWidget> {
   TextEditingController emailController;
   TextEditingController passwordController;
   bool passwordVisibility;
-  bool _loadingButton1 = false;
-  bool _loadingButton2 = false;
-  bool _loadingButton3 = false;
-  bool _loadingButton4 = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -47,12 +41,6 @@ class _LoginWidgetState extends State<LoginWidget> {
           height: double.infinity,
           decoration: BoxDecoration(
             color: Color(0x19444D59),
-            image: DecorationImage(
-              fit: BoxFit.fitWidth,
-              image: Image.asset(
-                'assets/images/launchScreen@3x.png',
-              ).image,
-            ),
           ),
           child: Padding(
             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 110),
@@ -61,11 +49,11 @@ class _LoginWidgetState extends State<LoginWidget> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 24),
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 24),
                   child: Image.asset(
-                    'assets/images/logoGeekMessaging.png',
+                    'assets/images/jarredLogo.png',
                     width: 160,
-                    height: 140,
+                    height: 160,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -85,9 +73,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         obscureText: false,
                         decoration: InputDecoration(
                           labelText: 'Email Address',
-                          labelStyle: FlutterFlowTheme.bodyText1.override(
-                            fontFamily: 'Lexend Deca',
-                          ),
+                          labelStyle: FlutterFlowTheme.bodyText1,
                           hintText: 'Email Address',
                           hintStyle: FlutterFlowTheme.bodyText1.override(
                             fontFamily: 'Lexend Deca',
@@ -139,9 +125,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         obscureText: !passwordVisibility,
                         decoration: InputDecoration(
                           labelText: 'Password',
-                          labelStyle: FlutterFlowTheme.bodyText1.override(
-                            fontFamily: 'Lexend Deca',
-                          ),
+                          labelStyle: FlutterFlowTheme.bodyText1,
                           hintText: 'Password',
                           hintStyle: FlutterFlowTheme.bodyText1.override(
                             fontFamily: 'Lexend Deca',
@@ -190,38 +174,31 @@ class _LoginWidgetState extends State<LoginWidget> {
                 ),
                 FFButtonWidget(
                   onPressed: () async {
-                    setState(() => _loadingButton1 = true);
-                    try {
-                      final user = await signInWithEmail(
-                        context,
-                        emailController.text,
-                        passwordController.text,
-                      );
-                      if (user == null) {
-                        return;
-                      }
-
-                      await Navigator.push(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          duration: Duration(milliseconds: 500),
-                          reverseDuration: Duration(milliseconds: 500),
-                          child: NavBarPage(initialPage: 'eventFeed'),
-                        ),
-                      );
-                    } finally {
-                      setState(() => _loadingButton1 = false);
+                    final user = await signInWithEmail(
+                      context,
+                      emailController.text,
+                      passwordController.text,
+                    );
+                    if (user == null) {
+                      return;
                     }
+
+                    await Navigator.push(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.rightToLeft,
+                        duration: Duration(milliseconds: 500),
+                        reverseDuration: Duration(milliseconds: 500),
+                        child: NavBarPage(initialPage: 'eventFeed'),
+                      ),
+                    );
                   },
                   text: 'Log In',
                   options: FFButtonOptions(
                     width: 300,
                     height: 55,
                     color: FlutterFlowTheme.primaryColor,
-                    textStyle: FlutterFlowTheme.subtitle2.override(
-                      fontFamily: 'Lexend Deca',
-                    ),
+                    textStyle: FlutterFlowTheme.subtitle2,
                     elevation: 4,
                     borderSide: BorderSide(
                       color: Colors.transparent,
@@ -229,7 +206,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                     ),
                     borderRadius: 30,
                   ),
-                  loading: _loadingButton1,
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 24),
@@ -241,27 +217,20 @@ class _LoginWidgetState extends State<LoginWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
                         child: Text(
                           'Don\'t have an account?',
-                          style: FlutterFlowTheme.bodyText1.override(
-                            fontFamily: 'Lexend Deca',
-                          ),
+                          style: FlutterFlowTheme.bodyText1,
                         ),
                       ),
                       FFButtonWidget(
                         onPressed: () async {
-                          setState(() => _loadingButton2 = true);
-                          try {
-                            await Navigator.push(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.fade,
-                                duration: Duration(milliseconds: 150),
-                                reverseDuration: Duration(milliseconds: 150),
-                                child: RegisterWidget(),
-                              ),
-                            );
-                          } finally {
-                            setState(() => _loadingButton2 = false);
-                          }
+                          await Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.fade,
+                              duration: Duration(milliseconds: 150),
+                              reverseDuration: Duration(milliseconds: 150),
+                              child: RegisterWidget(),
+                            ),
+                          );
                         },
                         text: 'Create Account',
                         options: FFButtonOptions(
@@ -279,8 +248,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                           ),
                           borderRadius: 12,
                         ),
-                        loading: _loadingButton2,
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -295,33 +263,22 @@ class _LoginWidgetState extends State<LoginWidget> {
                           alignment: AlignmentDirectional(0, 0),
                           child: FFButtonWidget(
                             onPressed: () async {
-                              setState(() => _loadingButton3 = true);
-                              try {
-                                final user = await signInWithGoogle(context);
-                                if (user == null) {
-                                  return;
-                                }
-                                await Navigator.pushAndRemoveUntil(
-                                  context,
-                                  PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    duration: Duration(milliseconds: 500),
-                                    reverseDuration:
-                                        Duration(milliseconds: 500),
-                                    child: CompleteProfileWidget(),
-                                  ),
-                                  (r) => false,
-                                );
-                              } finally {
-                                setState(() => _loadingButton3 = false);
+                              final user = await signInWithGoogle(context);
+                              if (user == null) {
+                                return;
                               }
+                              await Navigator.pushAndRemoveUntil(
+                                context,
+                                PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  duration: Duration(milliseconds: 500),
+                                  reverseDuration: Duration(milliseconds: 500),
+                                  child: NavBarPage(initialPage: 'eventFeed'),
+                                ),
+                                (r) => false,
+                              );
                             },
                             text: 'Sign in with Google',
-                            icon: FaIcon(
-                              FontAwesomeIcons.google,
-                              color: Color(0xFFFF0000),
-                              size: 18,
-                            ),
                             options: FFButtonOptions(
                               width: 230,
                               height: 44,
@@ -338,7 +295,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                               ),
                               borderRadius: 12,
                             ),
-                            loading: _loadingButton3,
                           ),
                         ),
                         Align(
@@ -355,7 +311,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               fit: BoxFit.contain,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -364,20 +320,15 @@ class _LoginWidgetState extends State<LoginWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
                   child: FFButtonWidget(
                     onPressed: () async {
-                      setState(() => _loadingButton4 = true);
-                      try {
-                        await Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.rightToLeft,
-                            duration: Duration(milliseconds: 250),
-                            reverseDuration: Duration(milliseconds: 250),
-                            child: ForgotPasswordWidget(),
-                          ),
-                        );
-                      } finally {
-                        setState(() => _loadingButton4 = false);
-                      }
+                      await Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          duration: Duration(milliseconds: 250),
+                          reverseDuration: Duration(milliseconds: 250),
+                          child: ForgotPasswordWidget(),
+                        ),
+                      );
                     },
                     text: 'Forgot Password?',
                     options: FFButtonOptions(
@@ -395,9 +346,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                       ),
                       borderRadius: 30,
                     ),
-                    loading: _loadingButton4,
                   ),
-                )
+                ),
               ],
             ),
           ),

@@ -3,26 +3,24 @@ import '../backend/backend.dart';
 import '../backend/firebase_storage/storage.dart';
 import '../change_password/change_password_widget.dart';
 import '../edit_profile/edit_profile_widget.dart';
-import '../flutter_flow/flutter_flow_drop_down.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/upload_media.dart';
 import '../login/login_widget.dart';
+import '../my_profil_details/my_profil_details_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyProfileWidget extends StatefulWidget {
-  MyProfileWidget({Key key}) : super(key: key);
+  const MyProfileWidget({Key key}) : super(key: key);
 
   @override
   _MyProfileWidgetState createState() => _MyProfileWidgetState();
 }
 
 class _MyProfileWidgetState extends State<MyProfileWidget> {
-  String dropDownValue;
-  bool _loadingButton = false;
   String uploadedFileUrl = '';
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -71,9 +69,9 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                   Align(
                                     alignment: AlignmentDirectional(0, 0),
                                     child: Image.asset(
-                                      'assets/images/hero@2x.png',
+                                      'assets/images/eventappbg.jpg',
                                       width: MediaQuery.of(context).size.width,
-                                      height: 200,
+                                      height: 180,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -81,7 +79,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                     alignment: AlignmentDirectional(0, 0),
                                     child: Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 160, 0, 0),
+                                          0, 140, 0, 0),
                                       child: InkWell(
                                         onTap: () async {
                                           final selectedMedia =
@@ -132,10 +130,10 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                         ),
                                       ),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
-                            )
+                            ),
                           ],
                         ),
                         Row(
@@ -165,7 +163,17 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                   fontSize: 20,
                                 ),
                               ),
-                            )
+                            ),
+                            if ((myProfileUsersRecord.isVerified) == true)
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                                child: Icon(
+                                  Icons.check_circle_outline_rounded,
+                                  color: Color(0xFF235500),
+                                  size: 32,
+                                ),
+                              ),
                           ],
                         ),
                         Padding(
@@ -181,10 +189,10 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                   myProfileUsersRecord.userName,
                                   style: FlutterFlowTheme.bodyText1.override(
                                     fontFamily: 'Lexend Deca',
-                                    color: FlutterFlowTheme.grayIcon,
+                                    color: FlutterFlowTheme.background,
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -194,7 +202,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                             myProfileUsersRecord.email,
                             style: FlutterFlowTheme.bodyText1.override(
                               fontFamily: 'Lexend Deca',
-                              color: FlutterFlowTheme.secondaryColor,
+                              color: FlutterFlowTheme.background,
                             ),
                           ),
                         ),
@@ -204,13 +212,13 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                             myProfileUsersRecord.status,
                             style: FlutterFlowTheme.bodyText1.override(
                               fontFamily: 'Lexend Deca',
-                              color: FlutterFlowTheme.secondaryColor,
+                              color: FlutterFlowTheme.background,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
               Expanded(
@@ -218,6 +226,68 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                   padding: EdgeInsets.zero,
                   scrollDirection: Axis.vertical,
                   children: [
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.background,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: FlutterFlowTheme.dark900,
+                                  offset: Offset(0, 1),
+                                )
+                              ],
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: InkWell(
+                              onTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    duration: Duration(milliseconds: 500),
+                                    reverseDuration:
+                                        Duration(milliseconds: 500),
+                                    child: MyProfilDetailsWidget(
+                                      userDetails:
+                                          myProfileUsersRecord.reference,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        24, 0, 0, 0),
+                                    child: Text(
+                                      'My Profile',
+                                      style: FlutterFlowTheme.subtitle2,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Align(
+                                      alignment: AlignmentDirectional(0.9, 0),
+                                      child: Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Color(0xFF95A1AC),
+                                        size: 18,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
                       child: Row(
@@ -261,10 +331,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                         24, 0, 0, 0),
                                     child: Text(
                                       'Edit Profile',
-                                      style:
-                                          FlutterFlowTheme.subtitle2.override(
-                                        fontFamily: 'Lexend Deca',
-                                      ),
+                                      style: FlutterFlowTheme.subtitle2,
                                     ),
                                   ),
                                   Expanded(
@@ -276,11 +343,11 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                         size: 18,
                                       ),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -323,10 +390,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                         24, 0, 0, 0),
                                     child: Text(
                                       'Change Password',
-                                      style:
-                                          FlutterFlowTheme.subtitle2.override(
-                                        fontFamily: 'Lexend Deca',
-                                      ),
+                                      style: FlutterFlowTheme.subtitle2,
                                     ),
                                   ),
                                   Expanded(
@@ -338,63 +402,33 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                                         size: 18,
                                       ),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
-                    Visibility(
-                      visible: (dropDownValue) == (myProfileUsersRecord.status),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
-                        child: FlutterFlowDropDown(
-                          options: ['Public', 'Private'].toList(),
-                          onChanged: (val) =>
-                              setState(() => dropDownValue = val),
-                          width: MediaQuery.of(context).size.width,
-                          height: 50,
-                          textStyle: FlutterFlowTheme.bodyText1.override(
-                            fontFamily: 'Lexend Deca',
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                          fillColor: Color(0xFF14181B),
-                          elevation: 2,
-                          borderColor: Colors.transparent,
-                          borderWidth: 0,
-                          borderRadius: 0,
-                          margin: EdgeInsetsDirectional.fromSTEB(8, 4, 8, 4),
-                        ),
-                      ),
-                    ),
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 20),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           FFButtonWidget(
                             onPressed: () async {
-                              setState(() => _loadingButton = true);
-                              try {
-                                await signOut();
-                                await Navigator.pushAndRemoveUntil(
-                                  context,
-                                  PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    duration: Duration(milliseconds: 500),
-                                    reverseDuration:
-                                        Duration(milliseconds: 500),
-                                    child: LoginWidget(),
-                                  ),
-                                  (r) => false,
-                                );
-                              } finally {
-                                setState(() => _loadingButton = false);
-                              }
+                              await signOut();
+                              await Navigator.pushAndRemoveUntil(
+                                context,
+                                PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  duration: Duration(milliseconds: 500),
+                                  reverseDuration: Duration(milliseconds: 500),
+                                  child: LoginWidget(),
+                                ),
+                                (r) => false,
+                              );
                             },
                             text: 'Log Out',
                             options: FFButtonOptions(
@@ -412,14 +446,13 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                               ),
                               borderRadius: 30,
                             ),
-                            loading: _loadingButton,
-                          )
+                          ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         );
